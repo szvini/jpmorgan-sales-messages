@@ -1,7 +1,9 @@
 package hu.galzol.jpmorgan.sales.message;
 
-import hu.galzol.jpmorgan.sales.product.SalesMessageDao;
+import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -12,8 +14,8 @@ public class SalesMessageReceiverTest {
     public void testReceiveProductPersistent() {
         SalesMessageReceiver r = getMessageReceiver(5, 5);
 
-        r.receiveProduct("A", 1);
-        assertThat(r.getSalesMessageDao().getNumberOfProduct()).isEqualTo(1);
+        r.receiveProduct("A", BigDecimal.ONE);
+        assertThat(r.getStorage().getNumberOfProduct()).isEqualTo(1);
     }
 
     @Test
@@ -37,12 +39,12 @@ public class SalesMessageReceiverTest {
     }
 
     private void testReport(Integer messages, Integer reportFreq, Integer expectedReportCount) {
-        SalesMessageDao storage = new SalesMessageDao();
+        SalesMessageMemoryStorage storage = new SalesMessageMemoryStorage();
         MockSalesMessageReporter report = new MockSalesMessageReporter();
         SalesMessageReceiver r = new SalesMessageReceiver(storage, report, reportFreq, 50);
 
         for (int i = 0; i < messages; i++) {
-            r.receiveProduct("A" + i, i);
+            r.receiveProduct("A", BigDecimal.ONE);
         }
 
         assertThat(report.getNumberOfReports()).isEqualTo(expectedReportCount);
@@ -56,11 +58,11 @@ public class SalesMessageReceiverTest {
 
         for (int i = 0; i < 5; i++) {
             try {
-                r.receiveProduct("A", 1);
+                r.receiveProduct("A", BigDecimal.ONE);
             } catch (IllegalStateException e) {
                 assertThat(i).withFailMessage("Error should be thrown in the %sth iteration.", max).isEqualTo(max);
                 assertThat(e.getMessage()).isEqualTo("No more messages allowed!");
-                assertThat(r.getSalesMessageDao().getNumberOfProduct()).isEqualTo(4);
+                assertThat(r.getStorage().getNumberOfProduct()).isEqualTo(4);
                 throw e;
             }
         }
@@ -73,15 +75,15 @@ public class SalesMessageReceiverTest {
         SalesMessageReceiver r = getMessageReceiver(0, 0);
 
         for (int i = 0; i < 5; i++) {
-            r.receiveProduct("A", 1);
+            r.receiveProduct("A", BigDecimal.ONE);
         }
 
-        assertThat(r.getSalesMessageDao().getNumberOfProduct()).isEqualTo(5);
+        assertThat(r.getStorage().getNumberOfProduct()).isEqualTo(5);
     }
 
 
     private SalesMessageReceiver getMessageReceiver(Integer reportFreq, Integer maxMsg) {
-        SalesMessageDao storage = new SalesMessageDao();
+        SalesMessageMemoryStorage storage = new SalesMessageMemoryStorage();
         MockSalesMessageReporter report = new MockSalesMessageReporter();
         return new SalesMessageReceiver(storage, report, reportFreq, maxMsg);
     }

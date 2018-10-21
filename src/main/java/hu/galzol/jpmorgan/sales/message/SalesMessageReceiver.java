@@ -1,26 +1,28 @@
 package hu.galzol.jpmorgan.sales.message;
 
-import hu.galzol.jpmorgan.sales.product.SalesMessageDao;
+import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
+
+import java.math.BigDecimal;
 
 public class SalesMessageReceiver {
 
-    private final SalesMessageDao salesMessageDao;
+    private final SalesMessageMemoryStorage SalesMessageStorage;
     private final SalesMessageReporter salesMessageReporter;
     private final Integer reportFrequency;
     private final Integer maximumMessage;
 
-    public SalesMessageReceiver(SalesMessageDao salesMessageDao, SalesMessageReporter salesMessageReporter, Integer reportFrequency, Integer maximumMessage) {
-        this.salesMessageDao = salesMessageDao;
+    public SalesMessageReceiver(SalesMessageMemoryStorage SalesMessageStorage, SalesMessageReporter salesMessageReporter, Integer reportFrequency, Integer maximumMessage) {
+        this.SalesMessageStorage = SalesMessageStorage;
         this.salesMessageReporter = salesMessageReporter;
         this.reportFrequency = reportFrequency;
         this.maximumMessage = maximumMessage;
     }
 
-    public void receiveProduct(String type, int value) {
+    public void receiveProduct(String type, BigDecimal value) {
         if (hasReachedMaximumNumberOfMessages()) {
             throw new IllegalStateException("No more messages allowed!");
         }
-        salesMessageDao.saveProduct(type, value);
+        SalesMessageStorage.saveProduct(type, value);
         if (hasHitReportFrequency()) {
             salesMessageReporter.reportProducts();
         }
@@ -33,7 +35,7 @@ public class SalesMessageReceiver {
      *         Else return true each time when number of messages hits the frequency.
      */
     public boolean hasHitReportFrequency() {
-        return reportFrequency < 1 || salesMessageDao.getNumberOfProduct() % reportFrequency == 0;
+        return reportFrequency < 1 || SalesMessageStorage.getNumberOfProduct() % reportFrequency == 0;
     }
 
     /**
@@ -44,14 +46,14 @@ public class SalesMessageReceiver {
      * @return
      */
     public boolean hasReachedMaximumNumberOfMessages() {
-        return maximumMessage > 0 && salesMessageDao.getNumberOfProduct() >= maximumMessage;
+        return maximumMessage > 0 && SalesMessageStorage.getNumberOfProduct() >= maximumMessage;
     }
 
-    public SalesMessageDao getSalesMessageDao() {
-        return salesMessageDao;
+    public SalesMessageMemoryStorage getStorage() {
+        return SalesMessageStorage;
     }
 
-    public SalesMessageReporter getSalesMessageReporter() {
+    public SalesMessageReporter getReporter() {
         return salesMessageReporter;
     }
 }
