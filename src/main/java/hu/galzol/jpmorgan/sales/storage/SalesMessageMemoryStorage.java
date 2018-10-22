@@ -1,8 +1,8 @@
 package hu.galzol.jpmorgan.sales.storage;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
+import hu.galzol.jpmorgan.sales.product.Product;
 import hu.galzol.jpmorgan.sales.product.ProductAdjustment;
-import hu.galzol.jpmorgan.sales.product.SalesProduct;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,18 +11,18 @@ import java.util.List;
 
 public class SalesMessageMemoryStorage implements SalesMessageStorage {
 
-    private List<SalesProduct> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
     private List<ProductAdjustment> adjustments = new ArrayList<>();
 
     @Override
-    public SalesProduct saveProduct(String type, BigDecimal value, Integer quantity) {
-        SalesProduct p = new SalesProduct(type, value, quantity);
+    public Product saveProduct(String type, BigDecimal value, Integer quantity) {
+        Product p = new Product(type, value, quantity);
         products.add(p);
         return p;
     }
 
     @Override
-    public void setProducts(List<SalesProduct> products) {
+    public void setProducts(List<Product> products) {
         this.products.clear();
         this.products.addAll(products);
     }
@@ -35,7 +35,7 @@ public class SalesMessageMemoryStorage implements SalesMessageStorage {
     }
 
     @Override
-    public List<SalesProduct> getProducts() {
+    public List<Product> getProducts() {
         return Collections.unmodifiableList(products);
     }
 

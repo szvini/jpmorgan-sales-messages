@@ -12,102 +12,102 @@ public class ProductCalculationsTest {
 
     @Test
     public void testSumOnUniqueProduct() {
-        List<SalesProduct> sum = ProductCalculations.sumProducts(Arrays.asList(
-                new SalesProduct("apple", new BigDecimal(10), 1),
-                new SalesProduct("banana", new BigDecimal(20), 2),
-                new SalesProduct("cherry", new BigDecimal(30), 3)
+        List<Product> sum = ProductCalculations.sumProducts(Arrays.asList(
+                new Product("apple", new BigDecimal(10), 1),
+                new Product("banana", new BigDecimal(20), 2),
+                new Product("cherry", new BigDecimal(30), 3)
         ));
 
         assertThat(sum).hasSize(3).containsExactly(
-                new SalesProduct("apple", new BigDecimal(10), 1),
-                new SalesProduct("banana", new BigDecimal(40), 2),
-                new SalesProduct("cherry", new BigDecimal(90), 3)
+                new Product("apple", new BigDecimal(10), 1),
+                new Product("banana", new BigDecimal(40), 2),
+                new Product("cherry", new BigDecimal(90), 3)
         );
     }
 
     @Test
     public void testSumOnMultipleProducts() {
-        List<SalesProduct> sum = ProductCalculations.sumProducts(Arrays.asList(
-                new SalesProduct("apple", new BigDecimal(10), 1),
-                new SalesProduct("banana", new BigDecimal(20), 2),
-                new SalesProduct("cherry", new BigDecimal(30), 3),
-                new SalesProduct("apple", new BigDecimal(1), 1),
-                new SalesProduct("banana", new BigDecimal(2), 2),
-                new SalesProduct("cherry", new BigDecimal(3), 3)
+        List<Product> sum = ProductCalculations.sumProducts(Arrays.asList(
+                new Product("apple", new BigDecimal(10), 1),
+                new Product("banana", new BigDecimal(20), 2),
+                new Product("cherry", new BigDecimal(30), 3),
+                new Product("apple", new BigDecimal(1), 1),
+                new Product("banana", new BigDecimal(2), 2),
+                new Product("cherry", new BigDecimal(3), 3)
         ));
 
         assertThat(sum).hasSize(3).containsExactly(
-                new SalesProduct("apple", new BigDecimal(11), 2),
-                new SalesProduct("banana", new BigDecimal(44), 4),
-                new SalesProduct("cherry", new BigDecimal(99), 6)
+                new Product("apple", new BigDecimal(11), 2),
+                new Product("banana", new BigDecimal(44), 4),
+                new Product("cherry", new BigDecimal(99), 6)
         );
     }
 
 
     @Test
     public void testAdjustOnUniqueProduct() {
-        List<SalesProduct> adj = ProductCalculations.adjustProducts(
+        List<Product> adj = ProductCalculations.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
-                        new SalesProduct("apple", new BigDecimal(10), 1),
-                        new SalesProduct("banana", new BigDecimal(20), 2),
-                        new SalesProduct("cherry", new BigDecimal(30), 3)
+                        new Product("apple", new BigDecimal(10), 1),
+                        new Product("banana", new BigDecimal(20), 2),
+                        new Product("cherry", new BigDecimal(30), 3)
                 )
         );
 
         assertThat(adj).hasSize(3).containsExactly(
-                new SalesProduct("apple", new BigDecimal(50), 1),
-                new SalesProduct("banana", new BigDecimal(20), 2),
-                new SalesProduct("cherry", new BigDecimal(30), 3)
+                new Product("apple", new BigDecimal(50), 1),
+                new Product("banana", new BigDecimal(20), 2),
+                new Product("cherry", new BigDecimal(30), 3)
         );
     }
 
     @Test
     public void testAdjustOnMultipleProducts() {
-        List<SalesProduct> adj = ProductCalculations.adjustProducts(
+        List<Product> adj = ProductCalculations.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
-                        new SalesProduct("apple", new BigDecimal(10), 1),
-                        new SalesProduct("banana", new BigDecimal(20), 2),
-                        new SalesProduct("cherry", new BigDecimal(30), 3),
-                        new SalesProduct("apple", new BigDecimal(1), 1),
-                        new SalesProduct("banana", new BigDecimal(2), 2),
-                        new SalesProduct("cherry", new BigDecimal(3), 3)
+                        new Product("apple", new BigDecimal(10), 1),
+                        new Product("banana", new BigDecimal(20), 2),
+                        new Product("cherry", new BigDecimal(30), 3),
+                        new Product("apple", new BigDecimal(1), 1),
+                        new Product("banana", new BigDecimal(2), 2),
+                        new Product("cherry", new BigDecimal(3), 3)
                 )
         );
 
         assertThat(adj).hasSize(6).containsExactly(
-                new SalesProduct("apple", new BigDecimal(50), 1),
-                new SalesProduct("banana", new BigDecimal(20), 2),
-                new SalesProduct("cherry", new BigDecimal(30), 3),
-                new SalesProduct("apple", new BigDecimal(5), 1),
-                new SalesProduct("banana", new BigDecimal(2), 2),
-                new SalesProduct("cherry", new BigDecimal(3), 3)
+                new Product("apple", new BigDecimal(50), 1),
+                new Product("banana", new BigDecimal(20), 2),
+                new Product("cherry", new BigDecimal(30), 3),
+                new Product("apple", new BigDecimal(5), 1),
+                new Product("banana", new BigDecimal(2), 2),
+                new Product("cherry", new BigDecimal(3), 3)
         );
     }
 
     @Test
     public void testMultipleAdjustOnMultipleProducts() {
-        List<SalesProduct> products = Arrays.asList(
-                new SalesProduct("apple", new BigDecimal(10), 1),
-                new SalesProduct("banana", new BigDecimal(20), 2),
-                new SalesProduct("cherry", new BigDecimal(30), 3),
-                new SalesProduct("apple", new BigDecimal(1), 1),
-                new SalesProduct("banana", new BigDecimal(2), 2),
-                new SalesProduct("cherry", new BigDecimal(3), 3)
+        List<Product> products = Arrays.asList(
+                new Product("apple", new BigDecimal(10), 1),
+                new Product("banana", new BigDecimal(20), 2),
+                new Product("cherry", new BigDecimal(30), 3),
+                new Product("apple", new BigDecimal(1), 1),
+                new Product("banana", new BigDecimal(2), 2),
+                new Product("cherry", new BigDecimal(3), 3)
         );
 
-        List<SalesProduct> adj = ProductCalculations.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
-        List<SalesProduct> adj2 = ProductCalculations.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adj);
-        List<SalesProduct> adj3 = ProductCalculations.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adj2);
+        List<Product> adj = ProductCalculations.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
+        List<Product> adj2 = ProductCalculations.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adj);
+        List<Product> adj3 = ProductCalculations.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adj2);
 
         assertThat(adj3).hasSize(6).containsExactly(
-                new SalesProduct("apple", new BigDecimal(15), 1),
-                new SalesProduct("banana", new BigDecimal(15), 2),
-                new SalesProduct("cherry", new BigDecimal(150), 3),
-                new SalesProduct("apple", new BigDecimal(6), 1),
-                new SalesProduct("banana", new BigDecimal(-3), 2),
-                new SalesProduct("cherry", new BigDecimal(15), 3)
+                new Product("apple", new BigDecimal(15), 1),
+                new Product("banana", new BigDecimal(15), 2),
+                new Product("cherry", new BigDecimal(150), 3),
+                new Product("apple", new BigDecimal(6), 1),
+                new Product("banana", new BigDecimal(-3), 2),
+                new Product("cherry", new BigDecimal(15), 3)
         );
     }
 

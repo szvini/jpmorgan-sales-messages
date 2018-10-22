@@ -1,8 +1,8 @@
 package hu.galzol.jpmorgan.sales.storage;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
+import hu.galzol.jpmorgan.sales.product.Product;
 import hu.galzol.jpmorgan.sales.product.ProductAdjustment;
-import hu.galzol.jpmorgan.sales.product.SalesProduct;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -15,8 +15,8 @@ public class SalesMessageRecordTest {
     public void testProductMessageRecord() {
         SalesMessageMemoryStorage storage = new SalesMessageMemoryStorage();
 
-        SalesProduct a = storage.saveProduct("A", BigDecimal.ONE, 1);
-        SalesProduct b = storage.saveProduct("B", BigDecimal.ONE, 1);
+        Product a = storage.saveProduct("A", BigDecimal.ONE, 1);
+        Product b = storage.saveProduct("B", BigDecimal.ONE, 1);
         assertThat(storage.getProducts()).containsOnly(a, b);
     }
 

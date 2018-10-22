@@ -26,8 +26,8 @@ public class ProductAdjustment {
         return operation;
     }
 
-    public SalesProduct adjust(SalesProduct p) {
-        return new SalesProduct(p.getType(), operation.calc(p.getValue(), value) , p.getQuantity());
+    public Product adjust(Product p) {
+        return new Product(p.getType(), operation.calc(p.getValue(), value) , p.getQuantity());
     }
 
     @Override

@@ -3,12 +3,12 @@ package hu.galzol.jpmorgan.sales.product;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class SalesProduct {
+public class Product {
     private final String type;
     private final BigDecimal value;
     private final Integer quantity;
 
-    public SalesProduct(String type, BigDecimal value, Integer quantity) {
+    public Product(String type, BigDecimal value, Integer quantity) {
         if (quantity < 1) throw new IllegalArgumentException("Quantity must be bigger than zero!");
         this.type = type;
         this.value = value;
@@ -31,7 +31,7 @@ public class SalesProduct {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SalesProduct that = (SalesProduct) o;
+        Product that = (Product) o;
         return Objects.equals(type, that.type) &&
                 Objects.equals(value, that.value) &&
                 Objects.equals(quantity, that.quantity);
@@ -44,7 +44,7 @@ public class SalesProduct {
 
     @Override
     public String toString() {
-        return "SalesProduct{" +
+        return "Product{" +
                 "type='" + type + '\'' +
                 ", value=" + value +
                 ", quantity=" + quantity +

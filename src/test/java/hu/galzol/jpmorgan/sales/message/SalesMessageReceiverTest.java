@@ -1,12 +1,11 @@
 package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
-import hu.galzol.jpmorgan.sales.product.SalesProduct;
+import hu.galzol.jpmorgan.sales.product.Product;
 import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -130,10 +129,10 @@ public class SalesMessageReceiverTest {
         r.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
 
         assertThat(r.getStorage().getProducts()).containsExactly(
-           new SalesProduct("A", new BigDecimal(12), 1),
-           new SalesProduct("A", new BigDecimal(3), 2),
-           new SalesProduct("B", new BigDecimal(10), 1),
-           new SalesProduct("A", new BigDecimal(11), 1)
+           new Product("A", new BigDecimal(12), 1),
+           new Product("A", new BigDecimal(3), 2),
+           new Product("B", new BigDecimal(10), 1),
+           new Product("A", new BigDecimal(11), 1)
         );
     }
 
