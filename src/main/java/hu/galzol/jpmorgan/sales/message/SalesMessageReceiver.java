@@ -1,30 +1,46 @@
 package hu.galzol.jpmorgan.sales.message;
 
+import hu.galzol.jpmorgan.sales.product.Operation;
 import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 
 import java.math.BigDecimal;
 
 public class SalesMessageReceiver {
 
-    private final SalesMessageMemoryStorage SalesMessageStorage;
+    private final SalesMessageMemoryStorage salesMessageStorage;
     private final SalesMessageReporter salesMessageReporter;
     private final Integer reportFrequency;
     private final Integer maximumMessage;
 
     public SalesMessageReceiver(SalesMessageMemoryStorage SalesMessageStorage, SalesMessageReporter salesMessageReporter, Integer reportFrequency, Integer maximumMessage) {
-        this.SalesMessageStorage = SalesMessageStorage;
+        this.salesMessageStorage = SalesMessageStorage;
         this.salesMessageReporter = salesMessageReporter;
         this.reportFrequency = reportFrequency;
         this.maximumMessage = maximumMessage;
     }
 
     public void receiveProduct(String type, BigDecimal value) {
+        receiveProduct(type, value, 1);
+    }
+
+    public void receiveProduct(String type, BigDecimal value, Integer quantity) {
+        receiveMessage(() -> salesMessageStorage.saveProduct(type, value, quantity));
+    }
+
+    public void receiveAdjustment(String type, BigDecimal value, Operation operation) {
+        receiveMessage(() -> salesMessageStorage.saveAdjustments(type, value, operation));
+    }
+
+    private void receiveMessage(MessagePersist messagePersist) {
         if (hasReachedMaximumNumberOfMessages()) {
             throw new IllegalStateException("No more messages allowed!");
         }
-        SalesMessageStorage.saveProduct(type, value);
+        messagePersist.saveMessage();
         if (hasHitReportFrequency()) {
             salesMessageReporter.reportProducts();
+        }
+        if (hasReachedMaximumNumberOfMessages()) {
+            salesMessageReporter.reportAppliedAdjustments();
         }
     }
 
@@ -35,7 +51,7 @@ public class SalesMessageReceiver {
      *         Else return true each time when number of messages hits the frequency.
      */
     public boolean hasHitReportFrequency() {
-        return reportFrequency < 1 || SalesMessageStorage.getNumberOfProduct() % reportFrequency == 0;
+        return reportFrequency < 1 || salesMessageStorage.getNumberOfMessages() % reportFrequency == 0;
     }
 
     /**
@@ -46,14 +62,18 @@ public class SalesMessageReceiver {
      * @return
      */
     public boolean hasReachedMaximumNumberOfMessages() {
-        return maximumMessage > 0 && SalesMessageStorage.getNumberOfProduct() >= maximumMessage;
+        return maximumMessage > 0 && salesMessageStorage.getNumberOfMessages() >= maximumMessage;
     }
 
     public SalesMessageMemoryStorage getStorage() {
-        return SalesMessageStorage;
+        return salesMessageStorage;
     }
 
     public SalesMessageReporter getReporter() {
         return salesMessageReporter;
+    }
+
+    private interface MessagePersist {
+        void saveMessage();
     }
 }

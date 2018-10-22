@@ -2,14 +2,24 @@ package hu.galzol.jpmorgan.sales.message;
 
 public class MockSalesMessageReporter implements SalesMessageReporter {
 
-    private Integer call = 0;
+    private Integer callReportProducts = 0;
+    private Integer callReportAdjustments = 0;
 
     @Override
     public void reportProducts() {
-        call++;
+        callReportProducts++;
     }
 
-    public Integer getNumberOfReports() {
-        return call;
+    @Override
+    public void reportAppliedAdjustments() {
+        callReportAdjustments++;
+    }
+
+    public Integer getNumberOfProductReports() {
+        return callReportProducts;
+    }
+
+    public Integer getNumberOfAdjustmentReports() {
+        return callReportAdjustments;
     }
 }
