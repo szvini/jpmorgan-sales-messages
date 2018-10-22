@@ -8,11 +8,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProductSummaryTest {
+public class ProductCalculationsTest {
 
     @Test
     public void testSumOnUniqueProduct() {
-        List<SalesProduct> sum = ProductSummary.sumProducts(Arrays.asList(
+        List<SalesProduct> sum = ProductCalculations.sumProducts(Arrays.asList(
                 new SalesProduct("apple", new BigDecimal(10), 1),
                 new SalesProduct("banana", new BigDecimal(20), 2),
                 new SalesProduct("cherry", new BigDecimal(30), 3)
@@ -27,7 +27,7 @@ public class ProductSummaryTest {
 
     @Test
     public void testSumOnMultipleProducts() {
-        List<SalesProduct> sum = ProductSummary.sumProducts(Arrays.asList(
+        List<SalesProduct> sum = ProductCalculations.sumProducts(Arrays.asList(
                 new SalesProduct("apple", new BigDecimal(10), 1),
                 new SalesProduct("banana", new BigDecimal(20), 2),
                 new SalesProduct("cherry", new BigDecimal(30), 3),
@@ -46,7 +46,7 @@ public class ProductSummaryTest {
 
     @Test
     public void testAdjustOnUniqueProduct() {
-        List<SalesProduct> adj = ProductSummary.adjustProducts(
+        List<SalesProduct> adj = ProductCalculations.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
                         new SalesProduct("apple", new BigDecimal(10), 1),
@@ -64,7 +64,7 @@ public class ProductSummaryTest {
 
     @Test
     public void testAdjustOnMultipleProducts() {
-        List<SalesProduct> adj = ProductSummary.adjustProducts(
+        List<SalesProduct> adj = ProductCalculations.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
                         new SalesProduct("apple", new BigDecimal(10), 1),
@@ -97,9 +97,9 @@ public class ProductSummaryTest {
                 new SalesProduct("cherry", new BigDecimal(3), 3)
         );
 
-        List<SalesProduct> adj = ProductSummary.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
-        List<SalesProduct> adj2 = ProductSummary.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adj);
-        List<SalesProduct> adj3 = ProductSummary.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adj2);
+        List<SalesProduct> adj = ProductCalculations.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
+        List<SalesProduct> adj2 = ProductCalculations.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adj);
+        List<SalesProduct> adj3 = ProductCalculations.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adj2);
 
         assertThat(adj3).hasSize(6).containsExactly(
                 new SalesProduct("apple", new BigDecimal(15), 1),

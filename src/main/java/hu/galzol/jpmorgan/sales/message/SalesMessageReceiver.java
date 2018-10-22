@@ -2,7 +2,7 @@ package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
 import hu.galzol.jpmorgan.sales.product.ProductAdjustment;
-import hu.galzol.jpmorgan.sales.product.ProductSummary;
+import hu.galzol.jpmorgan.sales.product.ProductCalculations;
 import hu.galzol.jpmorgan.sales.product.SalesProduct;
 import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 
@@ -34,7 +34,7 @@ public class SalesMessageReceiver {
     public void receiveAdjustment(String type, BigDecimal value, Operation operation) {
         receiveMessage(() -> {
             ProductAdjustment adj = salesMessageStorage.saveAdjustments(type, value, operation);
-            List<SalesProduct> adjustedProducts = ProductSummary.adjustProducts(adj, salesMessageStorage.getProducts());
+            List<SalesProduct> adjustedProducts = ProductCalculations.adjustProducts(adj, salesMessageStorage.getProducts());
             salesMessageStorage.setProducts(adjustedProducts);
         });
     }

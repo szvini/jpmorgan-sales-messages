@@ -7,7 +7,7 @@ import java.util.List;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
-public class ProductSummary {
+public class ProductCalculations {
 
     public static List<SalesProduct> sumProducts(List<SalesProduct> products) {
         return products.stream()
