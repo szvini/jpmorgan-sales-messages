@@ -1,13 +1,13 @@
 package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.ProductCalculations;
-import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
+import hu.galzol.jpmorgan.sales.storage.SalesMessageStorage;
 
 public class SalesMessageConsoleReporter implements SalesMessageReporter {
 
-    private final SalesMessageMemoryStorage storage;
+    private final SalesMessageStorage storage;
 
-    public SalesMessageConsoleReporter(SalesMessageMemoryStorage storage) {
+    public SalesMessageConsoleReporter(SalesMessageStorage storage) {
         this.storage = storage;
     }
 
