@@ -1,23 +1,23 @@
 package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
+import hu.galzol.jpmorgan.sales.product.Product;
 import hu.galzol.jpmorgan.sales.product.ProductAdjustment;
 import hu.galzol.jpmorgan.sales.product.ProductCalculations;
-import hu.galzol.jpmorgan.sales.product.Product;
-import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
+import hu.galzol.jpmorgan.sales.storage.SalesMessageStorage;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public class SalesMessageReceiver {
 
-    private final SalesMessageMemoryStorage salesMessageStorage;
+    private final SalesMessageStorage salesMessageStorage;
     private final SalesMessageReporter salesMessageReporter;
     private final Integer reportFrequency;
     private final Integer maximumMessage;
 
-    public SalesMessageReceiver(SalesMessageMemoryStorage SalesMessageStorage, SalesMessageReporter salesMessageReporter, Integer reportFrequency, Integer maximumMessage) {
-        this.salesMessageStorage = SalesMessageStorage;
+    public SalesMessageReceiver(SalesMessageStorage salesMessageStorage, SalesMessageReporter salesMessageReporter, Integer reportFrequency, Integer maximumMessage) {
+        this.salesMessageStorage = salesMessageStorage;
         this.salesMessageReporter = salesMessageReporter;
         this.reportFrequency = reportFrequency;
         this.maximumMessage = maximumMessage;
@@ -73,7 +73,7 @@ public class SalesMessageReceiver {
         return maximumMessage > 0 && salesMessageStorage.getNumberOfMessages() >= maximumMessage;
     }
 
-    public SalesMessageMemoryStorage getStorage() {
+    public SalesMessageStorage getStorage() {
         return salesMessageStorage;
     }
 
