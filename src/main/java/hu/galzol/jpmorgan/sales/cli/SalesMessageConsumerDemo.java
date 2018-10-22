@@ -12,16 +12,16 @@ import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class SalesMessageConsumer {
+public class SalesMessageConsumerDemo {
 
     private final SalesMessageStorage storage = new SalesMessageMemoryStorage();
     private final SalesMessageReporter reporter = new SalesMessageConsoleReporter(storage);
-    private final SalesMessageReceiver receiver = new SalesMessageReceiver(storage, reporter, 2, 10);
+    private final SalesMessageReceiver receiver = new SalesMessageReceiver(storage, reporter, 10, 50);
 
     private Scanner scanner = new Scanner(System.in).useLocale(Locale.ENGLISH);
 
     public static void main(String... args) {
-        new SalesMessageConsumer().start();
+        new SalesMessageConsumerDemo().start();
     }
 
     private void start() {
@@ -40,7 +40,7 @@ public class SalesMessageConsumer {
                         break;
                 }
             }
-            System.out.println("\nApplication is pausing, no more message accepted.");
+            System.out.println("Application is pausing, no more message accepted.");
         } finally {
             scanner.close();
         }

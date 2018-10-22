@@ -15,12 +15,14 @@ public class SalesMessageConsoleReporter implements SalesMessageReporter {
     public void reportProducts() {
         System.out.println("\nProduct sales report:");
         ProductCalculations.sumProducts(storage.getProducts()).forEach(System.out::println);
+        System.out.println();
     }
 
     @Override
     public void reportAppliedAdjustments() {
         System.out.println("\nProduct adjustments:");
         storage.getAdjustments().forEach(System.out::println);
+        System.out.println();
     }
 
 }
