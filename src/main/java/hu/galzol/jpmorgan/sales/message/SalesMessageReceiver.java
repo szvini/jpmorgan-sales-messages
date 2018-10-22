@@ -1,9 +1,13 @@
 package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
+import hu.galzol.jpmorgan.sales.product.ProductAdjustment;
+import hu.galzol.jpmorgan.sales.product.ProductSummary;
+import hu.galzol.jpmorgan.sales.product.SalesProduct;
 import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class SalesMessageReceiver {
 
@@ -28,14 +32,18 @@ public class SalesMessageReceiver {
     }
 
     public void receiveAdjustment(String type, BigDecimal value, Operation operation) {
-        receiveMessage(() -> salesMessageStorage.saveAdjustments(type, value, operation));
+        receiveMessage(() -> {
+            ProductAdjustment adj = salesMessageStorage.saveAdjustments(type, value, operation);
+            List<SalesProduct> adjustedProducts = ProductSummary.adjustProducts(adj, salesMessageStorage.getProducts());
+            salesMessageStorage.setProducts(adjustedProducts);
+        });
     }
 
-    private void receiveMessage(MessagePersist messagePersist) {
+    private void receiveMessage(MessageProcess messageProcess) {
         if (hasReachedMaximumNumberOfMessages()) {
             throw new IllegalStateException("No more messages allowed!");
         }
-        messagePersist.saveMessage();
+        messageProcess.process();
         if (hasHitReportFrequency()) {
             salesMessageReporter.reportProducts();
         }
@@ -73,7 +81,7 @@ public class SalesMessageReceiver {
         return salesMessageReporter;
     }
 
-    private interface MessagePersist {
-        void saveMessage();
+    private interface MessageProcess {
+        void process();
     }
 }

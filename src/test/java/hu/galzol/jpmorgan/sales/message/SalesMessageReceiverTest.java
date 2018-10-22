@@ -1,10 +1,12 @@
 package hu.galzol.jpmorgan.sales.message;
 
 import hu.galzol.jpmorgan.sales.product.Operation;
+import hu.galzol.jpmorgan.sales.product.SalesProduct;
 import hu.galzol.jpmorgan.sales.storage.SalesMessageMemoryStorage;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -114,6 +116,25 @@ public class SalesMessageReceiverTest {
         }
 
         assertThat(r.getStorage().getNumberOfMessages()).isEqualTo(5);
+    }
+
+    @Test
+    public void testProductAdjustment() {
+        SalesMessageReceiver r = getMessageReceiver(0, 0);
+
+        r.receiveProduct("A", BigDecimal.TEN);
+        r.receiveProduct("A", BigDecimal.ONE, 2);
+        r.receiveProduct("B", BigDecimal.TEN);
+        r.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
+        r.receiveProduct("A", BigDecimal.TEN);
+        r.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
+
+        assertThat(r.getStorage().getProducts()).containsExactly(
+           new SalesProduct("A", new BigDecimal(12), 1),
+           new SalesProduct("A", new BigDecimal(3), 2),
+           new SalesProduct("B", new BigDecimal(10), 1),
+           new SalesProduct("A", new BigDecimal(11), 1)
+        );
     }
 
     private SalesMessageReceiver getMessageReceiver(Integer reportFreq, Integer maxMsg) {
