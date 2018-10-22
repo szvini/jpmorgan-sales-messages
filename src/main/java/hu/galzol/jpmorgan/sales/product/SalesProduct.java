@@ -9,6 +9,7 @@ public class SalesProduct {
     private final Integer quantity;
 
     public SalesProduct(String type, BigDecimal value, Integer quantity) {
+        if (quantity < 1) throw new IllegalArgumentException("Quantity must be bigger than zero!");
         this.type = type;
         this.value = value;
         this.quantity = quantity;
@@ -39,5 +40,14 @@ public class SalesProduct {
     @Override
     public int hashCode() {
         return Objects.hash(type, value, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "SalesProduct{" +
+                "type='" + type + '\'' +
+                ", value=" + value +
+                ", quantity=" + quantity +
+                '}';
     }
 }
