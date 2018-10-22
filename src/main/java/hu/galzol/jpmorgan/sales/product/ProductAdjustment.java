@@ -29,4 +29,13 @@ public class ProductAdjustment {
     public SalesProduct adjust(SalesProduct p) {
         return new SalesProduct(p.getType(), operation.calc(p.getValue(), value) , p.getQuantity());
     }
+
+    @Override
+    public String toString() {
+        return "ProductAdjustment{" +
+                "type='" + type + '\'' +
+                ", value=" + value +
+                ", operation=" + operation +
+                '}';
+    }
 }
